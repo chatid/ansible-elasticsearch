@@ -1,0 +1,23 @@
+---
+elasticsearch_version: 2.1.0
+elasticsearch_user: elasticsearch
+elasticsearch_group: "{{ elasticsearch_user }}"
+elasticsearch_home: /usr/share/elasticsearch
+
+elasticsearch_conf_dir: /etc/elasticsearch
+elasticsearch_data_dir: /var/lib/elasticsearch
+elasticsearch_work_dir: /tmp/elasticsearch
+elasticsearch_log_dir: /var/log/elasticsearch
+
+elasticsearch_plugin_dir: "{{elasticsearch_home}}/plugins"
+elasticsearch_plugins: []
+
+elasticsearch_network_host: "0.0.0.0"
+elasticsearch_network_bind_host: "{{ elasticsearch_network_host }}"
+elasticsearch_network_publish_host: "{{ elasticsearch_network_host }}"
+
+elasticsearch_http_cors_enabled: yes
+elasticsearch_http_cors_allow_origin: "*"
+elasticsearch_http_cors_allow_methods: OPTIONS, HEAD, GET, POST, PUT, DELETE
+
+elasticsearch_log_level: INFO

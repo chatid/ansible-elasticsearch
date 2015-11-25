@@ -1,0 +1,36 @@
+---
+- name: install | check if the jar exists already
+  stat:
+    path: '{{elasticsearch_home}}/lib/elasticsearch-{{elasticsearch_version}}.jar'
+  register: version_exists
+
+- name: install | download deb
+  get_url:
+    url: https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-{{elasticsearch_version}}.deb
+    dest: /tmp/elasticsearch-{{elasticsearch_version}}.deb
+  when: not version_exists.stat.exists
+
+- name: install | install the package
+  apt:
+    deb: /tmp/elasticsearch-{{elasticsearch_version}}.deb
+    dpkg_options: force-confnew
+  when: not version_exists.stat.exists
+
+- name: install | set service start policy
+  command: update-rc.d elasticsearch defaults 95 10
+  changed_when: False
+
+- name: install | render config
+  template:
+    src: elasticsearch.yml
+    dest: '{{ elasticsearch_conf_dir }}/elasticsearch.yml'
+    owner: root
+    group: '{{ elasticsearch_group }}'
+    mode: 0750
+  register: elasticsearch_config_result
+
+- name: install | enable service
+  service:
+    name: elasticsearch
+    state: '{{ "restarted" if elasticsearch_config_result.changed else "started" }}'
+

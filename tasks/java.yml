@@ -1,0 +1,14 @@
+---
+- name: java | accept license
+  shell: echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections; echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
+  args:
+    creates: /usr/lib/jvm/java-8-oracle
+
+- name: java | add webupd8team/java repo
+  apt_repository:
+    repo=ppa:webupd8team/java
+    state=present
+    update_cache=yes
+
+- name: java | oracle-java8-installer
+  apt: name=oracle-java8-installer

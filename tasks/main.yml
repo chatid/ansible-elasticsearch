@@ -1,0 +1,7 @@
+---
+- include: java.yml
+  tags: [java]
+
+- include: install.yml
+  tags: [install]
+

@@ -1,0 +1,12 @@
+---
+galaxy_info:
+  author: Matt Wright <wright@chatid.com>
+  description: Installs and configures Elasticsearch <http://elastic.co>
+  company: ChatID Inc.
+  license: MIT
+  platforms:
+    - name: Ubuntu
+      versions:
+        - trusty
+  categories: []
+dependencies: []
