@@ -1,5 +1,9 @@
 - hosts: all
   sudo: yes
 
+  vars:
+    elasticsearch_plugins:
+      - cloud-aws
+
   roles:
     - role: "{{ role_name }}"

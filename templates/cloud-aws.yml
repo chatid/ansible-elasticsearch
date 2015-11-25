@@ -1,0 +1,3 @@
+cloud:
+  aws:
+    tags: {{ elasticsearch_cloud_aws_tags | to_yaml }}

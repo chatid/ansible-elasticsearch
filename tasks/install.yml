@@ -1,7 +1,7 @@
 ---
 - name: install | check if the jar exists already
   stat:
-    path: '{{elasticsearch_home}}/lib/elasticsearch-{{elasticsearch_version}}.jar'
+    path: '{{ elasticsearch_home_dir }}/lib/elasticsearch-{{ elasticsearch_version }}.jar'
   register: version_exists
 
 - name: install | download deb
@@ -20,6 +20,18 @@
   command: update-rc.d elasticsearch defaults 95 10
   changed_when: False
 
+- action: ec2_facts
+
+- include: aws.yml
+  when: ansible_ec2_instance_type is defined
+
+- name: install | plugins
+  command: '{{ elasticsearch_home_dir }}/bin/plugin install {{ item }}'
+  args:
+    creates: '{{ elasticsearch_home_dir }}/plugins/{{ item }}/{{ item }}-{{ elasticsearch_version }}.jar'
+  register: elasticsearch_plugin_result
+  with_items: '{{ elasticsearch_plugins }}'
+
 - name: install | render config
   template:
     src: elasticsearch.yml
@@ -32,5 +44,4 @@
 - name: install | enable service
   service:
     name: elasticsearch
-    state: '{{ "restarted" if elasticsearch_config_result.changed else "started" }}'
-
+    state: '{{ "restarted" if elasticsearch_config_result.changed or elasticsearch_plugin_result.changed else "started" }}'

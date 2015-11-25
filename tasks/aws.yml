@@ -1,0 +1,18 @@
+---
+- name: aws | install plugin
+  command: '{{ elasticsearch_home_dir }}/bin/plugin install cloud-aws'
+  args:
+    creates: '{{ elasticsearch_home_dir }}/plugins/cloud-aws/cloud-aws-{{ elasticsearch_version }}.jar'
+
+- name: aws | render configuration
+  template:
+    src: cloud-aws.yml
+    dest: '{{ elasticsearch_conf_dir }}/cloud-aws.yml'
+    owner: root
+    group: '{{ elasticsearch_group }}'
+    mode: 0750
+  register: elasticsearch_cloud_aws_config_result
+
+- name: aws | set discovery type
+  set_fact:
+    elasticsearch_discovery_type: ec2

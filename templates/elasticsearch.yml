@@ -102,6 +102,9 @@ http.cors.allow-methods: {{ elasticsearch_http_cors_allow_methods }}
 # Pass an initial list of hosts to perform discovery when new node is started:
 # The default list of hosts is ["127.0.0.1", "[::1]"]
 #
+{% if elasticsearch_discovery_type is defined %}
+discovery.type: {{ elasticsearch_discovery_type }}
+{% endif %}
 # discovery.zen.ping.unicast.hosts: ["host1", "host2"]
 #
 # Prevent the "split brain" by configuring the majority of nodes (total number of nodes / 2 + 1):
